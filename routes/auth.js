@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const User = require("../models/user-model");
+const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport")
 
@@ -40,5 +40,50 @@ router.post("/signup", (req, res) => {
         });
     });
 });
+
+router.post("/login", (req, res) => {
+    passport.authenticate("local", (err, theUser, failureDetails) => {
+        if (err) {
+            res.status(500).json({
+                message: "Something went wrong authenticating user",
+            });
+            return;
+        }
+        if (!theUser) {
+            // "failureDetails" contains the error messages
+            // from our logic in "LocalStrategy" { message: '...' }.
+            res.status(401).json(failureDetails);
+            return;
+        }
+        // save user in session
+        req.login(theUser, (err) => {
+            if (err) {
+                res.status(500).json({ message: "Session save went bad." });
+                return;
+            }
+            // We are now logged in (that's why we can also send req.user)
+            res.status(200).json(theUser);
+        });
+    })(req, res);
+});
+
+router.post("/logout", (req, res) => {
+    req.logout();
+    res.status(200).json(({message: "Log out success"}))
+})
+
+router.get("/loggedin", (req, res) => {
+    if(req.isAuthenticated()){
+        res.json(req.user)
+        return;
+    }
+    res.json({})
+})
+
+
+
+
+
+
 
 module.exports = router;
