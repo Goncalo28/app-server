@@ -51,8 +51,7 @@ app.use(
 // default value for title local
 app.locals.title = 'APP_SERVER';
 
-const index = require('./routes/index');
-app.use('/', index);
-
+const auth = require('./routes/auth');
+app.use('/auth', auth);
 
 module.exports = app;
