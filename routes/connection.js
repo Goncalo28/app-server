@@ -15,7 +15,7 @@ router.post('/connections', (req, res) => {
     })
 })
 
-router.post("/connections/:id", (req, res) => {
+router.delete("/connections/:id", (req, res) => {
   let id = req.params.id;
   Connection.findByIdAndDelete(id)
     .then(() => {

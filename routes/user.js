@@ -18,7 +18,7 @@ router.get("/users/:id", (req, res) => {
     })
 })
 
-router.post("/users/:id", (req, res) => {
+router.delete("/users/:id", (req, res) => {
   let id = req.params.id;
   User.findByIdAndDelete(id)
     .then(() => {

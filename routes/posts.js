@@ -39,7 +39,7 @@ router.get('/posts/:id', (req, res) => {
     })
 });
 
-router.post('/posts/delete/:id', (req, res) => {
+router.delete('/posts/delete/:id', (req, res) => {
   let id = req.params.id
   Post.findByIdAndDelete(id)
     .then(() => {
