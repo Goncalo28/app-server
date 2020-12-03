@@ -3,14 +3,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const Connection = require("../models/Connection");
+const passport = require('passport');
 
-router.get("/connections/:id", (req, res) => {
-  let id = req.params.id;
-  Connection.findById(id)
-    .then((connection) => {
-      res.json(connection)
-    })
-})
 
 router.post('/connections', (req, res) => {
   let from = req.user._id;
@@ -29,5 +23,20 @@ router.post("/connections/:id", (req, res) => {
     })
 })
 
+router.get("/connections/user", (req, res) => {
+  let userID = req.user._id
+  Connection.find({ $or: [{ from: userID }, { to: userID }] })
+    .then((connections) => {
+      res.json(connections)
+    })
+})
+
+router.get("/connections/:id", (req, res) => {
+  let id = req.params.id;
+  Connection.findById(id)
+    .then((connection) => {
+      res.json(connection)
+    })
+})
 
 module.exports = router;

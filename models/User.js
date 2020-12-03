@@ -27,17 +27,9 @@ const userSchema = new Schema({
     type: String,
     trim: true
   },
-  posts: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Post'
-  }],
   connections: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }],
-  pending: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Connection'
   }],
   bio: String,
   typeOfUser: {
