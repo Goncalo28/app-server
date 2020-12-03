@@ -8,6 +8,9 @@ const passport = require("passport")
 router.post("/signup", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    const email = req.body.email;
+    const typeOfUser = req.body.typeOfUser;
+
     if (!username || !password) {
         res.status(400).json({ message: "Provide username and password" });
         return;
@@ -28,6 +31,8 @@ router.post("/signup", (req, res) => {
         const aNewUser = new User({
             username: username,
             password: hashPass,
+            email: email,
+            typeOfUser: typeOfUser
         });
         aNewUser.save((err) => {
             if (err) {
@@ -36,7 +41,14 @@ router.post("/signup", (req, res) => {
                 });
                 return;
             }
-            res.json(aNewUser);
+            req.login(aNewUser, (err) => {
+                if (err) {
+                    res.status(500).json({ message: "Session save went bad." });
+                    return;
+                }
+                // We are now logged in (that's why we can also send req.user)
+                res.status(200).json(aNewUser);
+            });
         });
     });
 });
@@ -69,21 +81,15 @@ router.post("/login", (req, res) => {
 
 router.post("/logout", (req, res) => {
     req.logout();
-    res.status(200).json(({message: "Log out success"}))
+    res.status(200).json(({ message: "Log out success" }))
 })
 
 router.get("/loggedin", (req, res) => {
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         res.json(req.user)
         return;
     }
     res.json({})
 })
-
-
-
-
-
-
 
 module.exports = router;

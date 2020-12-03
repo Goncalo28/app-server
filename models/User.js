@@ -17,7 +17,7 @@ const userSchema = new Schema({
     type: String,
     trim: true,
     unique: true,
-    require: true
+    required: true
   },
   firstName: {
     type: String,
@@ -27,7 +27,7 @@ const userSchema = new Schema({
     type: String,
     trim: true
   },
-  post: [{
+  posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
   }],
@@ -40,8 +40,10 @@ const userSchema = new Schema({
     ref: 'Connection'
   }],
   bio: String,
-  type: {
-
+  typeOfUser: {
+    type: String,
+    required: true,
+    enum: ['Investor', 'Innovator']
   }
 },
   {

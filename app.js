@@ -52,6 +52,15 @@ app.use(
 app.locals.title = 'APP_SERVER';
 
 const auth = require('./routes/auth');
-app.use('/auth', auth);
+app.use('/api', auth);
+
+const user = require('./routes/user');
+app.use('/api', user);
+
+const connection = require('./routes/connection');
+app.use('/api', connection);
+
+const posts = require('./routes/posts');
+app.use('/api', posts);
 
 module.exports = app;
