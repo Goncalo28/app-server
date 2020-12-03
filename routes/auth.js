@@ -6,10 +6,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport")
 
 router.post("/signup", (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    const email = req.body.email;
-    const typeOfUser = req.body.typeOfUser;
+    const { username, password, email, typeOfUser, firstName, lastName } = req.body
 
     if (!username || !password) {
         res.status(400).json({ message: "Provide username and password" });
@@ -29,10 +26,12 @@ router.post("/signup", (req, res) => {
         const salt = bcrypt.genSaltSync(10);
         const hashPass = bcrypt.hashSync(password, salt);
         const aNewUser = new User({
-            username: username,
+            username,
             password: hashPass,
-            email: email,
-            typeOfUser: typeOfUser
+            firstName,
+            lastName,
+            email,
+            typeOfUser
         });
         aNewUser.save((err) => {
             if (err) {
