@@ -31,12 +31,12 @@ router.get("/connections/user", (req, res) => {
     })
 })
 
-router.get("/connections/:id", (req, res) => {
-  let id = req.params.id;
-  Connection.findById(id)
-    .then((connection) => {
-      res.json(connection)
-    })
-})
+// router.get("/connections/:id", (req, res) => {
+//   let id = req.params.id;
+//   Connection.findById(id)
+//     .then((connection) => {
+//       res.json(connection)
+//     })
+// })
 
 module.exports = router;
