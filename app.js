@@ -38,8 +38,6 @@ app.use(session({
   rolling: true
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(
   cors({
@@ -47,6 +45,10 @@ app.use(
     origin: [process.env.CLIENT_HOSTNAME]
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // default value for title local
 app.locals.title = 'APP_SERVER';
