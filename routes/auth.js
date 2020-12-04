@@ -72,6 +72,7 @@ router.post("/login", (req, res) => {
                 res.status(500).json({ message: "Session save went bad." });
                 return;
             }
+            console.log(req.user)
             // We are now logged in (that's why we can also send req.user)
             res.status(200).json(theUser);
         });
