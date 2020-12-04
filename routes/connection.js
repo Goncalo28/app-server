@@ -14,10 +14,11 @@ router.get("/connections/user", (req, res) => {
     })
 })
 
-router.post('/connections', (req, res) => {
+router.post('/connections/:id', (req, res) => {
   let from = req.user._id;
-  let { to } = req.body
-  Connection.create({ from, to })
+  let to  = req.params.id
+  console.log(`user to accept. ${to}`)
+  Connection.create({ from: from, to: to })
     .then((connection) => {
       res.json(connection)
     })
