@@ -6,7 +6,7 @@ const Post = require("../models/Post");
 const passport = require('passport');
 
 router.get('/posts', (req, res) => {
-  Post.find()
+  Post.find().sort({ createdAt: -1 })
     .then((posts) => {
       res.json(posts)
     })
