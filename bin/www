@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 const http = require('http');
+const cors = require('cors');
 
 let app = require('../app');
 
 // catch 404 and render a not-found.hbs template
 app.use((req, res, next) => {
   res.status(404);
-  res.render('not-found');
+  // res.render('not-found');
 });
 
 app.use((err, req, res, next) => {
@@ -17,11 +18,25 @@ app.use((err, req, res, next) => {
   // only render if the error ocurred before sending the response
   if (!res.headersSent) {
     res.status(500);
-    res.render('error');
+    // res.render('error');
   }
 });
 
 let server = http.createServer(app);
+
+const io = require("socket.io")(server, {
+  cors: {
+    credentials: true,
+    origin: [process.env.CLIENT_HOSTNAME]
+  }
+});
+
+io.on('connection', socket => {
+  socket.on('message', ({ name, message }) => {
+    console.log('Inside Io.on to emit')
+    io.emit('message', { name, message })
+  })
+});
 
 server.on('error', error => {
   if (error.syscall !== 'listen') { throw error }
