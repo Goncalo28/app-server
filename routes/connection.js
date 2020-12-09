@@ -6,6 +6,7 @@ const Connection = require("../models/Connection");
 const passport = require('passport');
 
 router.get("/connections/user", (req, res) => {
+  console.log("IM IN THE SERVER")
   let userID = req.user._id
   console.log(userID)
   Connection.find({ $or: [{ from: userID }, { to: userID }] })
