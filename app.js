@@ -31,10 +31,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(session({
   secret: 'meshitup',
-  cookie: { expire: 60000 },
+  cookie: { maxAge: 60000 },
   rolling: true
 }));
 
@@ -42,7 +43,7 @@ app.use(session({
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.CLIENT_HOSTNAME, process.env.APP_HOSTNAME]
+    origin: [process.env.CLIENT_HOSTNAME]
   })
 );
 
@@ -52,6 +53,9 @@ app.use(passport.session());
 
 // default value for title local
 app.locals.title = 'APP_SERVER';
+
+const index = require('./routes/index');
+app.use('/', index);
 
 const auth = require('./routes/auth');
 app.use('/api', auth);
